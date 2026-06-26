@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahasiswa Baru USTI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(135deg, #185FA5 0%, #0C447C 100%);
+      color: white;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 60px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .navbar-logo {
+      width: 40px; height: 40px;
+      background: white;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .navbar-info { flex: 1; }
+    .navbar-title { font-size: 15px; font-weight: bold; color: white; }
+    .navbar-sub { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 1px; }
+
+    /* MAIN */
+    .page {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2.5rem 1rem;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* CARD */
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .card-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .card-icon {
+      width: 60px; height: 60px;
+      background: #E6F1FB;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 28px;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 3px;
+    }
+    .card-sub {
+      font-size: 12px;
+      color: #888;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 1.25rem 0;
+    }
+
+    /* FORM */
+    label {
+      display: block;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input[type=text] {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #333;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input[type=text]:focus {
+      border-color: #185FA5;
+      box-shadow: 0 0 0 3px rgba(24,95,165,0.12);
+    }
+    .btn-save {
+      width: 100%;
+      padding: 11px;
+      background: #185FA5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+      letter-spacing: 0.5px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-save:hover { background: #0C447C; }
+    .btn-save:active { transform: scale(0.98); }
+
+    /* RESULT BOX */
+    .result-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: none;
+      font-size: 13px;
+      border: 1px solid;
+    }
+    .result-box.ok {
+      display: block;
+      background: #e8f8f1;
+      border-color: #a3d9be;
+      color: #0f5132;
+    }
+    .result-box.err {
+      display: block;
+      background: #fdf0f0;
+      border-color: #f1b4b4;
+      color: #842029;
+    }
+
+    /* RESULT HEADER */
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+    }
+    .badge-ok  { background: #1D9E75; color: white; }
+    .badge-err { background: #dc3545; color: white; }
+    .skenario-label { font-size: 12px; font-weight: bold; }
+
+    .result-type {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    .result-main {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .result-main.ok  { color: #0f6848; }
+    .result-main.err { color: #842029; }
+
+    /* KETERANGAN SKENARIO */
+    .keterangan {
+      background: rgba(0,0,0,0.04);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 11px;
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+    .keterangan-title {
+      font-weight: bold;
+      font-size: 11px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .keterangan-row {
+      display: flex;
+      gap: 6px;
+    }
+    .keterangan-key {
+      min-width: 85px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .fg-block {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* STATUS PENGUJIAN */
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .checkmark-ok  { color: #1D9E75; font-size: 16px; }
+    .checkmark-err { color: #dc3545; font-size: 16px; }
+
+    .timestamp {
+      font-size: 10px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-logo">🎓</div>
+    <div class="navbar-info">
+      <div class="navbar-title">Aplikasi Mahasiswa Baru USTI</div>
+      <div class="navbar-sub">Universitas Sains Dan Teknologi Indonesia &nbsp;|&nbsp; Software Quality Assurance — Project Akhir UAS</div>
+    </div>
+  </nav>
+
+  <!-- MAIN PAGE -->
+  <div class="page">
+    <div class="card">
+
+      <div class="card-header">
+        <div class="card-icon">🎓</div>
+        <div class="card-title">🏠 Form Pendaftaran Mahasiswa Baru USTI</div>
+        <div class="card-sub">Masukkan nama calon mahasiswa</div>
+      </div>
+
+      <hr class="divider">
+
+      <label for="nama">Nama Calon Mahasiswa :</label>
+      <input type="text" id="nama" placeholder="Masukkan nama lengkap" />
+      <button class="btn-save" onclick="simpan()">SAVE</button>
+
+      <div class="result-box" id="result"></div>
+
+    </div>
+  </div>
+
+  <script>
+    function detectType(val) {
+      if (!val) return null;
+      var hasAlpha = /[a-zA-Z]/.test(val);
+      var hasNum   = /[0-9]/.test(val);
+      if (hasAlpha && hasNum) return { label: 'Karakter+Number', skenario: 3, cara: 'Ketik huruf+angka → klik tombol SAVE' };
+      if (hasNum)             return { label: 'Number',          skenario: 2, cara: 'Ketik angka → tekan Enter atau klik tombol SAVE' };
+      return                         { label: 'Charakter',       skenario: 1, cara: 'Ketik huruf/teks → tekan Enter atau klik tombol SAVE' };
+    }
+
+    function now() {
+      var d = new Date();
+      var p = function(n){ return n < 10 ? '0'+n : n; };
+      return p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+    }
+
+    function simpan() {
+      var nama = document.getElementById('nama').value.trim();
+      var box  = document.getElementById('result');
+      box.className = 'result-box';
+
+      if (!nama) {
+        box.className = 'result-box err';
+        box.innerHTML =
+          '<div class="result-header"><span class="badge badge-err">GAGAL</span><span class="skenario-label">Skenario 4</span></div>'+
+          '<div class="result-type">&#9658; Tanpa Entri Data (Kosong)</div>'+
+          '<div class="result-main err">Tidak ada data yang diisi!</div>'+
+          '<div class="keterangan">'+
+            '<div class="keterangan-title">&#9432; KETERANGAN SKENARIO</div>'+
+            '<div style="color:#666;font-size:11px;margin-bottom:4px">Input kosong. Sistem menampilkan pesan validasi error.</div>'+
+            '<div class="keterangan-row"><span class="keterangan-key">Cara uji</span><span>Biarkan kosong → klik tombol SAVE</span></div>'+
+            '<div class="keterangan-row"><span class="keterangan-key">Foreground</span><span>Merah &mdash; #dc3545 <span class="fg-block" style="background:#dc3545"></span></span></div>'+
+          '</div>'+
+          '<div class="status-row"><span class="checkmark-err">&#10008;</span> Status Pengujian : <span style="color:#dc3545">GAGAL</span></div>'+
+          '<div class="timestamp">&#9202; Waktu pengujian : '+now()+'</div>';
+        return;
+      }
+
+      var t = detectType(nama);
+      box.className = 'result-box ok';
+      box.innerHTML =
+        '<div class="result-header"><span class="badge badge-ok">BERHASIL</span><span class="skenario-label">Skenario '+t.skenario+'</span></div>'+
+        '<div class="result-type">&#9658; Penggunaan '+t.label+'</div>'+
+        '<div class="result-main ok">Data '+t.label.toLowerCase()+' berhasil disimpan: &ldquo;'+nama+'&rdquo;</div>'+
+        '<div class="keterangan">'+
+          '<div class="keterangan-title">&#9432; KETERANGAN SKENARIO</div>'+
+          '<div style="color:#555;font-size:11px;margin-bottom:4px">Input hanya mengandung '+t.label.toLowerCase()+'. Sistem mendeteksi tipe ini sebagai '+t.label.toLowerCase()+' murni.</div>'+
+          '<div class="keterangan-row"><span class="keterangan-key">Cara uji</span><span>'+t.cara+'</span></div>'+
+          '<div class="keterangan-row"><span class="keterangan-key">Foreground</span><span>Hijau &mdash; #1D9E75 <span class="fg-block" style="background:#1D9E75"></span></span></div>'+
+        '</div>'+
+        '<div class="status-row"><span class="checkmark-ok">&#10004;</span> Status Pengujian : <span style="color:#1D9E75">BERHASIL</span></div>'+
+        '<div class="timestamp">&#9202; Waktu pengujian : '+now()+'</div>';
+
+      document.getElementById('nama').value = '';
+    }
+
+    document.getElementById('nama').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') simpan();
+    });
+  </script>
+
+</body>
+</html>

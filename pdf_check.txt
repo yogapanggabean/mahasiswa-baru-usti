@@ -1,0 +1,178 @@
+---PAGE 8 ---
+8 
+ Tabel 1. Perbandingan Continuous Integration (CI) dan Continuous Deployment (CD)  
+Aspek  Continuous Integration (CI)  Continuous Deployment (CD)  
+Definisi  Proses integrasi kode secara 
+berkala ke repository bersama  Proses deployment otomatis ke 
+lingkungan produksi  
+Tujuan  Mendeteksi bug lebih awal dalam 
+siklus pengembangan  Mempercepat pengiriman fitur ke 
+pengguna akhir  
+Frekuensi  Setiap kali ada commit kode (bisa 
+beberapa kali sehari)  Setiap kali build CI berhasil 
+melewati semua test  
+Output  Laporan build dan hasil 
+pengujian otomatis  Aplikasi yang berjalan di 
+lingkungan produksi  
+Tools Utama  Jenkins, GitHub Actions, GitLab 
+CI, CircleCI  Jenkins, Spinnaker, ArgoCD, 
+AWS CodeDeploy  
+Intervensi 
+Manual  Tidak diperlukan (fully 
+automated)  Tidak diperlukan untuk 
+Continuous Deployment; 
+diperlukan untuk Continuous 
+Delivery  
+ 
+2.3 Jenkins sebagai Automation Server  
+Jenkins adalah automation server open -source yang ditulis dalam bahasa Java, 
+dirancang khusus untuk memfasilitasi proses Continuous Integration dan Continuous 
+Delivery/Deployment. Jenkins pertama kali dikembangkan oleh Kohsuke Kawaguchi pada 
+tahun 2004 den gan nama Hudson, kemudian berganti nama menjadi Jenkins pada tahun 2011 
+setelah terjadi perpecahan dengan Oracle. Saat ini, Jenkins dikelola oleh komunitas open -
+source yang besar dan aktif di bawah naungan Linux Foundation's Continuous Delivery 
+Foundation (CDF).  
+Sebagai automation server, Jenkins bertugas mengorkestrasikan seluruh pipeline 
+CI/CD dengan cara mengotomatisasi proses build, menjalankan pengujian (unit test, 
+integration test), serta memfasilitasi proses deployment ke berbagai lingkungan (development, 
+staging, production). Penelitian oleh Abdel Mowad et al. (2022) menunjukkan bahwa 
+penggunaan CI/CD seperti Jenkins secara signifikan mampu mempersempit kesenjangan 
+antara tim developer dan tim operasi, yang merupakan inti dari filosofi DevOps.
+---END PAGE 8 ---
+
+---PAGE 9 ---
+9 
+ Tabel 2. Fitur -Fitur Utama Jenkins  
+Fitur  Keterangan  
+Open Source  Tersedia secara gratis dengan lisensi MIT, komunitas aktif 
+dengan ribuan kontributor global.  
+Plugin Ecosystem  Lebih dari 1.800 plugin tersedia untuk integrasi dengan tools 
+pengembangan populer (Git, Maven, Docker, AWS, 
+Kubernetes, dll.).  
+Pipeline as Code  Mendukung penulisan definisi pipeline dalam file Jenkinsfile 
+menggunakan Groovy DSL (Declarative & Scripted 
+Pipeline).  
+Multi -Platform  Dapat berjalan di Windows, Linux, macOS, dan sebagai 
+container Docker.  
+Distributed Builds  Mendukung arsitektur master -agent untuk mendistribusikan 
+beban build ke beberapa mesin sekaligus.  
+Notifikasi Otomatis  Mampu mengirimkan notifikasi hasil build via email, Slack, 
+Microsoft Teams, dan platform komunikasi lainnya.  
+Antarmuka Web  Menyediakan dashboard berbasis web yang intuitif untuk 
+manajemen job, monitoring build, dan konfigurasi sistem.  
+ 
+2.4 Arsitektur  Jenkins  
+Jenkins menggunakan arsitektur Master -Agent (sebelumnya dikenal sebagai Master -
+Slave). Dalam arsitektur ini, Jenkins Master bertanggung jawab untuk menjadwalkan build job, 
+mendistribusikan pekerjaan ke agent, memantau status agent, serta menyajikan hasil b uild 
+melalui antarmuka web. Sementara itu, Jenkins Agent (Worker Node) adalah mesin yang 
+secara aktif menjalankan proses build sesuai instruksi dari Master.  
+Arsitektur ini memungkinkan Jenkins untuk menskalakan kapasitas build dengan 
+mudah, karena beban pekerjaan dapat didistribusikan ke banyak agent yang berjalan di mesin 
+yang berbeda, bahkan di sistem operasi yang berbeda secara bersamaan. Komunikasi antara 
+Master dan Agent dilakukan melalui protokol Jenkins Remoting menggunakan JNLP atau 
+SSH.
+---END PAGE 9 ---
+
+---PAGE 11 ---
+11 
+ BAB III  
+INSTALASI JENKINS DI WINDOWS  
+3.1 Prasyarat  Sistem  
+Sebelum melakukan instalasi Jenkins di Windows, terdapat beberapa prasyarat yang 
+harus dipenuhi untuk memastikan Jenkins dapat berjalan dengan optimal. Prasyarat ini meliputi 
+spesifikasi perangkat keras minimum, perangkat lunak pendukung, serta konfigurasi  sistem 
+yang diperlukan.  
+Tabel 3. Prasyarat Sistem untuk Instalasi Jenkins di Windows  
+Komponen  Minimum  Rekomendasi  
+Sistem Operasi  Windows 10 (64 -bit) Windows 10/11 Pro atau 
+Windows Server 2019/2022  
+Prosesor  Dual -core CPU, 1 GHz  Quad -core CPU, 2 GHz atau 
+lebih  
+RAM  256 MB (hanya Jenkins)  4 GB atau lebih (termasuk 
+aplikasi lain)  
+Ruang Disk  1 GB (instalasi Jenkins)  10 GB atau lebih (termasuk 
+workspace dan artifact)  
+Java (JDK)  JDK 11 (sudah tidak didukung 
+sepenuhnya)  JDK 17 atau JDK 21 (LTS versi 
+terbaru)  
+Browser  Chrome, Firefox, Edge (versi 
+terbaru)  Google Chrome atau Mozilla 
+Firefox terbaru  
+Koneksi Jaringan  Akses internet untuk unduh 
+plugin  Koneksi stabil dengan 
+bandwidth memadai  
+Port  Port 8080 (default HTTP)  Port 8080 atau port kustom yang 
+tidak digunakan aplikasi lain  
+ 
+3.2 Instalasi  Java Development Kit (JDK)  
+Jenkins memerlukan Java Runtime Environment (JRE) atau Java Development Kit 
+(JDK) untuk dapat berjalan. Versi JDK yang direkomendasikan adalah JDK 21 (Long -Term 
+Support). Berikut ini adalah langkah -langkah instalasi JDK pada Windows:  
+1. Buka browser dan kunjungi laman resmi OpenJDK di https://adoptium.net atau situs 
+Oracle di https://www.oracle.com/java/technologies/downloads/ untuk mengunduh 
+JDK 21. 
+2. Pilih versi Windows x64 Installer (.msi) dan unduh file installer tersebut.
+---END PAGE 11 ---
+
+---PAGE 19 ---
+19 
+ 3.5 Manajemen Plugin Jenkins  
+Plugin adalah komponen yang memperluas fungsionalitas Jenkins. Pengelolaan plugin 
+dilakukan melalui menu Manage Jenkins > Manage Plugins. Terdapat empat tab utama dalam 
+halaman Plugin Manager, yaitu: Updates (plugin yang perlu diperbarui), Available (plugi n baru 
+yang dapat dipasang), Installed (plugin yang sudah terpasang), dan Advanced (konfigurasi 
+sumber plugin).  
+Beberapa plugin esensial yang perlu dipasang untuk implementasi CI/CD yang lengkap 
+antara lain: Git Plugin (integrasi dengan repository Git), Pipeline Plugin (mendukung pipeline 
+as code), Maven Integration Plugin (untuk proyek berbasis Maven), Credentials Plugin 
+(manajemen kredensial yang aman), Blue Ocean (antarmuka visual pipeline yang modern), dan 
+Email Extension Plugin (notifikasi email).  
+Tabel 4. Plugin Jenkins Penting untuk CI/CD di Windows  
+Nama Plugin  Kategori  Fungsi Utama  
+Git Plugin  SCM  Integrasi Jenkins dengan repository Git 
+(GitHub, GitLab, Bitbucket)  
+Pipeline Plugin  Pipeline  Mendukung pembuatan dan eksekusi 
+Pipeline as Code (Declarative & 
+Scripted)  
+Maven Integration  Build Tools  Integrasi dengan Apache Maven untuk 
+proyek Java  
+Blue Ocean  UI/UX  Antarmuka visual modern untuk 
+visualisasi dan manajemen pipeline 
+CI/CD  
+Credentials Binding  Security  Mengelola dan menggunakan 
+kredensial (token, password) secara 
+aman dalam pipeline  
+Workspace Cleanup  Utilities  Membersihkan workspace Jenkins 
+sebelum atau setelah eksekusi build  
+Email Extension  Notification  Mengirimkan notifikasi email yang 
+dapat dikustomisasi berdasarkan hasil 
+build  
+Docker Pipeline  Container  Memungkinkan penggunaan Docker 
+container sebagai environment build 
+dalam pipeline
+---END PAGE 19 ---
+
+---PAGE 24 ---
+24 
+ 4.5.4 Stage: Deploy  
+Tahapan Deploy bertanggung jawab untuk mendistribusikan artifact hasil build ke 
+lingkungan target. Pada Windows, deployment dapat dilakukan dengan beberapa cara, antara 
+lain: menyalin file JAR/WAR menggunakan perintah xcopy atau robocopy, melakukan 
+deploym ent ke Windows IIS Server, mengirimkan artifact ke server remote menggunakan 
+WinRM, atau mendeploy ke platform cloud menggunakan AWS CLI, Azure CLI, atau Google 
+Cloud SDK.  
+Tabel 5. Perbandingan Perintah Jenkins antara Windows dan Linux  
+Fungsi  Windows (bat/powershell)  Linux/macOS (sh)  
+Eksekusi 
+Perintah  bat 'perintah'  sh 'perintah'  
+Build Maven  bat 'mvn clean package'  sh 'mvn clean package'  
+Salin File  bat 'xcopy /E /I src dest'  sh 'cp -r src dest'  
+Hapus Direktori  bat 'rmdir /S /Q direktori'  sh 'rm -rf direktori'  
+Variabel 
+Lingkungan  bat 'echo %JAVA_HOME%'  sh 'echo $JAVA_HOME'  
+PowerShell  powershell 'Get -Process'  Tidak ada padanan langsung  
+Path Separator  Backslash ( \) atau Forward Slash 
+(/) Forward Slash (/) saja
+---END PAGE 24 ---
+

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahasiswa Baru USTI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .nav {
+      background: #185FA5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      height: 58px; /* increased for better spacing */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      width: 44px;
+      height: 44px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .nav-logo img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .nav-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.1;
+    }
+    .nav-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.9);
+      margin-top: 2px;
+    }
+
+    /* PAGE */
+    .page {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1.1rem 1rem; /* reduce top spacing from header */
+      min-height: calc(100vh - 42px);
+    }
+
+    /* CARD */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem 1.5rem 1.6rem;
+      width: 100%;
+      max-width: 370px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    /* FORM */
+    label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    input[type=text] {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1px solid #d0d5dd;
+      border-radius: 7px;
+      font-size: 13.5px;
+      color: #222;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input[type=text]:focus {
+      border-color: #185FA5;
+      box-shadow: 0 6px 18px rgba(24,95,165,0.08);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 14px;
+      background: #185FA5;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 18px; /* increased gap to the result card */
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .4px;
+      transition: background .18s, transform .18s, box-shadow .18s;
+    }
+    .btn:hover {
+      background: #164a86;
+      box-shadow: 0 10px 24px rgba(24,95,165,0.16);
+      transform: translateY(-1px);
+    }
+    .btn:active { transform: translateY(0); }
+
+    /* RESULT BOX */
+    .rbox {
+      display: none;
+      margin-top: 18px;
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-size: 14px;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    }
+    .rbox.ok {
+      display: block;
+      border-left: 6px solid #1D9E75;
+      color: #0b4d30;
+    }
+    .rbox.err {
+      display: block;
+      border-left: 6px solid #dc3545;
+      color: #7a1e1e;
+    }
+
+    .rhead {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: .3px;
+    }
+    .bok  { background: #1D9E75; color: white; }
+    .berr { background: #dc3545; color: white; }
+
+    .rlabel {
+      font-size: 13px;
+      color: #444;
+      font-weight: 700;
+    }
+    .rtype { font-size: 13px; color: #5a5a5a; margin-bottom: 10px; }
+    .rmain { font-size: 15px; font-weight: 700; margin-bottom: 12px; line-height: 1.4; }
+    .rmain.ok  { color: #0b5c35; }
+    .rmain.err { color: #7a1e1e; }
+    .rsub {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: #555;
+      font-size: 13px;
+    }
+    .rsub span { display: flex; gap: 6px; }
+*** End Patch
+    /* COLLAPSIBLE */
+    .toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #185FA5;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .toggle-btn .arrow {
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    .detail {
+      display: none;
+      background: rgba(0,0,0,0.04);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .detail.show { display: block; }
+
+    .drow { display: flex; gap: 6px; }
+    .dk   { min-width: 78px; font-weight: 600; color: #555; }
+    .fgdot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-left: 3px;
+    }
+
+    /* STATUS & TIMESTAMP */
+    .srow {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .cok  { color: #1D9E75; font-size: 15px; }
+    .cerr { color: #dc3545; font-size: 15px; }
+
+    .ts {
+      font-size: 10px;
+      color: #999;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="nav-logo"><img src="usti.png" alt="USTI logo"></div>
+    <div>
+      <div class="nav-title">Aplikasi Mahasiswa Baru USTI</div>
+      <div class="nav-sub">Universitas Sains Dan Teknologi Indonesia &nbsp;·&nbsp; SQA Project Akhir UAS</div>
+    </div>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="page">
+    <div class="card">
+      <div class="card-title">Form Pendaftaran Mahasiswa Baru USTI</div>
+      <label for="nama">Nama Calon Mahasiswa</label>
+      <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+      <button class="btn" onclick="simpan()">SAVE</button>
+      <div class="rbox" id="rbox"></div>
+    </div>
+  </div>
+
+  <script>
+    function detectType(v) {
+      var a = /[a-zA-Z]/.test(v), n = /[0-9]/.test(v);
+      if (a && n) return { label: 'Charakter+Number', sk: 3, cara: 'Ketik huruf+angka → klik tombol SAVE' };
+      if (n)      return { label: 'Number',           sk: 2, cara: 'Ketik angka → tekan Enter atau klik SAVE' };
+      return             { label: 'Charakter',        sk: 1, cara: 'Ketik huruf/teks → tekan Enter atau klik SAVE' };
+    }
+
+    function now() {
+      var d = new Date(), p = function(n){ return n < 10 ? '0'+n : n; };
+      return p(d.getDate())+'-'+p(d.getMonth()+1)+'-'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+    }
+
+    function toggleDetail(btn) {
+      btn.classList.toggle('open');
+      document.getElementById('det').classList.toggle('show');
+    }
+
+    function simpan() {
+      var nama = document.getElementById('nama').value.trim();
+      var box  = document.getElementById('rbox');
+      box.className = 'rbox';
+
+      if (!nama) {
+        box.className = 'rbox err';
+        box.innerHTML =
+          '<div class="rhead"><span class="r-icon">&#10060;</span><span class="badge berr">GAGAL</span><span style="font-size:13px;font-weight:600;color:#444;">Skenario 4</span></div>'+ 
+          '<div class="rtype">&#9658; Tanpa Entri Data (Kosong)</div>'+ 
+          '<div class="rmain err">Tidak ada data yang diisi!</div>'+ 
+          '<div class="rsub"><span><strong>Input :</strong> Kosong</span><span><strong>Status :</strong> GAGAL</span><span><strong>Hasil :</strong> Data tidak tersimpan</span></div>'+ 
+            '<div class="drow"><span class="dk">Foreground</span><span>Merah &mdash; #dc3545 <span class="fgdot" style="background:#dc3545"></span></span></div>'+
+          '</div>'+
+          '<div class="srow"><span class="cerr">&#10008;</span> Status Pengujian : <span style="color:#dc3545">GAGAL</span></div>'+
+          '<div class="ts">&#9202; Waktu pengujian : '+now()+'</div>';
+        return;
+      }
+
+      var t = detectType(nama);
+      box.className = 'rbox ok';
+      box.innerHTML =
+        '<div class="rhead"><span class="r-icon">&#9989;</span><span class="badge bok">BERHASIL</span><span style="font-size:13px;font-weight:600;color:#444;">Skenario '+t.sk+'</span></div>'+ 
+        '<div class="rtype">&#9658; Penggunaan '+t.label+'</div>'+ 
+        '<div class="rmain ok">Data berhasil disimpan: &ldquo;'+nama+'&rdquo;</div>'+ 
+        '<div class="rsub"><span><strong>Input :</strong> '+nama+'</span><span><strong>Status :</strong> BERHASIL</span><span><strong>Hasil :</strong> Data tersimpan</span></div>'+ 
+          '<div class="drow"><span class="dk">Cara uji</span><span>'+t.cara+'</span></div>'+
+          '<div class="drow"><span class="dk">Foreground</span><span>Hijau &mdash; #1D9E75 <span class="fgdot" style="background:#1D9E75"></span></span></div>'+
+        '</div>'+
+        '<div class="srow"><span class="cok">&#10004;</span> Status Pengujian : <span style="color:#1D9E75">BERHASIL</span></div>'+
+        '<div class="ts">&#9202; Waktu pengujian : '+now()+'</div>';
+
+    }
+
+    document.getElementById('nama').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') simpan();
+    });
+  </script>
+
+</body>
+</html>
