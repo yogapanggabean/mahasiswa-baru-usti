@@ -1,78 +1,75 @@
+name: SQA - Pengujian Aplikasi Mahasiswa Baru USTI
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
 
-whitebox-syntax:
-name: White Box - Syntax Check
-runs-on: ubuntu-latest
+  whitebox-syntax:
+    name: White Box - Syntax Check
+    runs-on: ubuntu-latest
 
-```
-steps:
-  - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Cek File HTML
-    run: |
-      find . -name "index.html"
-```
+      - name: Cek File HTML
+        run: |
+          find . -name "index.html"
 
-whitebox-static:
-name: White Box - Static Analysis
-runs-on: ubuntu-latest
-needs: whitebox-syntax
+  whitebox-static:
+    name: White Box - Static Analysis
+    runs-on: ubuntu-latest
+    needs: whitebox-syntax
 
-```
-steps:
-  - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Analisis Struktur
-    run: |
-      echo "Analisis struktur aplikasi berhasil"
-```
+      - name: Analisis Struktur
+        run: |
+          echo "Analisis struktur aplikasi berhasil"
 
-whitebox-coding:
-name: White Box - Coding Standard
-runs-on: ubuntu-latest
-needs: whitebox-syntax
+  whitebox-coding:
+    name: White Box - Coding Standard
+    runs-on: ubuntu-latest
+    needs: whitebox-syntax
 
-```
-steps:
-  - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Coding Standard Check
-    run: |
-      echo "Coding standard sesuai"
-```
+      - name: Coding Standard Check
+        run: |
+          echo "Coding standard sesuai"
 
-blackbox:
-name: Black Box - 4 Skenario
-runs-on: ubuntu-latest
-needs:
-- whitebox-static
-- whitebox-coding
+  blackbox:
+    name: Black Box - 4 Skenario
+    runs-on: ubuntu-latest
+    needs:
+      - whitebox-static
+      - whitebox-coding
 
-```
-steps:
-  - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  - name: Skenario 1 Character
-    run: echo "PASS"
+      - name: Skenario 1 Character
+        run: echo "PASS"
 
-  - name: Skenario 2 Number
-    run: echo "PASS"
+      - name: Skenario 2 Number
+        run: echo "PASS"
 
-  - name: Skenario 3 Character+Number
-    run: echo "PASS"
+      - name: Skenario 3 Character+Number
+        run: echo "PASS"
 
-  - name: Skenario 4 Kosong
-    run: echo "PASS"
-```
+      - name: Skenario 4 Kosong
+        run: echo "PASS"
 
-laporan:
-name: Laporan Akhir SQA Pipeline
-runs-on: ubuntu-latest
-needs: blackbox
+  laporan:
+    name: Laporan Akhir SQA Pipeline
+    runs-on: ubuntu-latest
+    needs: blackbox
 
-```
-steps:
-  - name: Generate Report
-    run: |
-      echo "Laporan SQA berhasil dibuat"
-```
+    steps:
+      - name: Generate Report
+        run: |
+          echo "Laporan SQA berhasil dibuat"
