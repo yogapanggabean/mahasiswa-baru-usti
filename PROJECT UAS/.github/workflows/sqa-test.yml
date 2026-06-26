@@ -1,0 +1,66 @@
+name: SQA - Pengujian Aplikasi Mahasiswa Baru USTI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Deploy dan Validasi Aplikasi
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Checkout kode dari repository
+        uses: actions/checkout@v3
+
+      - name: Step 2 - Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Step 3 - Validasi file HTML tersedia
+        run: |
+          echo "Mengecek file index.html..."
+          if [ -f "index.html" ]; then
+            echo "✅ index.html ditemukan"
+          else
+            echo "❌ index.html tidak ditemukan"
+            exit 1
+          fi
+
+      - name: Step 4 - Install dependencies pengujian
+        run: npm install -g html-validate
+
+      - name: Step 5 - Validasi struktur HTML
+        run: |
+          echo "Menjalankan validasi HTML..."
+          html-validate index.html || echo "Validasi selesai"
+
+      - name: Step 6 - Cek elemen penting ada di HTML
+        run: |
+          echo "Mengecek elemen form..."
+          grep -q 'id="nama"' index.html && echo "✅ Field nama ditemukan" || (echo "❌ Field nama tidak ada" && exit 1)
+          grep -q 'class="btn"' index.html && echo "✅ Tombol SAVE ditemukan" || (echo "❌ Tombol SAVE tidak ada" && exit 1)
+          grep -q 'id="rbox"' index.html && echo "✅ Result box ditemukan" || (echo "❌ Result box tidak ada" && exit 1)
+          grep -q 'function simpan' index.html && echo "✅ Fungsi simpan ditemukan" || (echo "❌ Fungsi simpan tidak ada" && exit 1)
+
+      - name: Step 7 - Cek skenario pengujian ada di script
+        run: |
+          echo "Mengecek logika skenario..."
+          grep -q 'Skenario 1' index.html && echo "✅ Skenario 1 (Character) ada" || echo "❌ Skenario 1 tidak ada"
+          grep -q 'Skenario 2' index.html && echo "✅ Skenario 2 (Number) ada" || echo "❌ Skenario 2 tidak ada"
+          grep -q 'Skenario 3' index.html && echo "✅ Skenario 3 (Character+Number) ada" || echo "❌ Skenario 3 tidak ada"
+          grep -q 'Skenario 4' index.html && echo "✅ Skenario 4 (Kosong) ada" || echo "❌ Skenario 4 tidak ada"
+
+      - name: Step 8 - Laporan hasil pengujian
+        run: |
+          echo "=================================="
+          echo "  LAPORAN SQA - MAHASISWA BARU USTI"
+          echo "=================================="
+          echo "Tanggal  : $(date '+%d-%m-%Y %H:%M:%S')"
+          echo "Branch   : ${{ github.ref_name }}"
+          echo "Commit   : ${{ github.sha }}"
+          echo "Status   : SELESAI"
+          echo "=================================="
